@@ -25,6 +25,8 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
   const [thereIsPath, setThereIsPath] = useState<boolean>(true);
   // TODO check if we really need this
   const [searchIsFinished, setSearchIsFinished] = useState(false);
+  const [pathCells, setPathCells] = useState<Array<{ x: number; y: number }>>([]);
+
 
   const handleCellClick = (row: number, col: number) => {
     const newGrid = [...grid];
@@ -58,12 +60,14 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
     let pathWasFound = false;
 
     const animateSearch = async () => {
+      const previous = Array.from({ length: GRID_ROWS }, () => new Array(GRID_COLUMNS).fill(null));
+
       while (queue.length > 0) {
         const current = queue.shift()!;
         const { x, y } = current;
 
         const newGrid = [...grid];
-        const currentCellIsNeitherTheOriginOrDestination = !((x === origin.x && y == origin.y) || (x === destination.x && y == destination.y));
+        const currentCellIsNeitherTheOriginOrDestination = !((x === origin.x && y === origin.y) || (x === destination.x && y === destination.y));
         newGrid[x][y] = {
           ...newGrid[x][y],
           beingUsedDuringSearch: currentCellIsNeitherTheOriginOrDestination,
@@ -73,6 +77,15 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
         const reachedDestination = x === destination.x && y === destination.y;
         if (reachedDestination) {
           pathWasFound = true;
+
+          let currentPath = [];
+          let current = { x, y };
+          while (current.x !== origin.x || current.y !== origin.y) {
+            currentPath.push({ x: current.x, y: current.y });
+            current = previous[current.x][current.y];
+          }
+    
+          setPathCells(currentPath.reverse());
           break;
         }
 
@@ -84,6 +97,8 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
           if (movementIsValid) {
             queue.push({ x: nx, y: ny });
             visited[nx][ny] = true;
+
+            previous[nx][ny] = { x, y };
           }
         }
 
@@ -118,6 +133,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
     setGrid(newGrid);
     setSearchIsFinished(false);
     setThereIsPath(false);
+    setPathCells([]);
   }, [cols, rows]);
 
   useEffect(() => {
@@ -138,6 +154,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
               }, colIndex) => (
             <div key={colIndex} className='m-1'>
               <Cell
+                isOptimalPath={pathCells.some((point) => point.x === rowIndex && point.y === colIndex && !(rowIndex === destination.x && colIndex === destination.y))}
                 beingUsedDuringSearch={beingUsedDuringSearch}
                 isOrigin={rowIndex === origin.x && colIndex === origin.y}
                 isDestination={rowIndex == destination.x && colIndex === destination.y}
