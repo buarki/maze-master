@@ -21,8 +21,10 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
   );
   const [origin, setOrigin] = useState<{x: number, y: number}>(invalidPoint);
   const [destination, setDestination] = useState<{x: number, y: number}>(invalidPoint);
-
   const [isMousePressed, setMousePressed] = useState<boolean>(false);
+  const [thereIsPath, setThereIsPath] = useState<boolean>(true);
+  // TODO check if we really need this
+  const [searchIsFinished, setSearchIsFinished] = useState(false);
 
   const handleCellClick = (row: number, col: number) => {
     const newGrid = [...grid];
@@ -44,7 +46,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
     }
   };
 
-  const runPathFinding = () => {
+  const runPathFinding = async () => {
     const visited = Array.from({ length: GRID_ROWS }, () => new Array(GRID_COLUMNS).fill(false));
 
     const queue = [{ x: origin.x, y: origin.y }];
@@ -52,6 +54,8 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
 
     const dx = [0, 1, 0, -1];
     const dy = [-1, 0, 1, 0];
+
+    let pathWasFound = false;
 
     const animateSearch = async () => {
       while (queue.length > 0) {
@@ -68,6 +72,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
 
         const reachedDestination = x === destination.x && y === destination.y;
         if (reachedDestination) {
+          pathWasFound = true;
           break;
         }
 
@@ -86,7 +91,9 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
       }
     };
 
-    animateSearch();
+    await animateSearch();
+    setThereIsPath(pathWasFound);
+    setSearchIsFinished(true);
   };
 
   const reloadGrid = useCallback(() => {
@@ -109,6 +116,8 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
     setDestination({ x: newDestinationX, y: newDestinationY });
 
     setGrid(newGrid);
+    setSearchIsFinished(false);
+    setThereIsPath(false);
   }, [cols, rows]);
 
   useEffect(() => {
@@ -143,7 +152,9 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
       <div className='flex justify-center gap-12'>
         <button
           onClick={reloadGrid}
-          className='bg-blue-500 hover:bg-blue-300 p-2 text-white font-bold'>Reload</button>
+          className={`bg-blue-500 hover:bg-blue-300 p-2 text-white font-bold ${searchIsFinished && !thereIsPath ? 'vibrate' : ''}`}>
+            Reload
+        </button>
         <button
           onClick={runPathFinding}
           className='bg-green-500 hover:bg-green-300 p-2 text-white font-bold'>Find Path</button>
