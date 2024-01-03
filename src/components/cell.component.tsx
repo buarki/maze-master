@@ -13,9 +13,9 @@ interface CellProps {
 
 const Cell: React.FC<CellProps> = ({ isWall, isOrigin, isDestination, beingUsedDuringSearch, onClick, onMouseOver, }) => {
   const cellColor =
-    beingUsedDuringSearch ? 'bg-yellow-300' :
-    isOrigin ? 'bg-red-300' :
-    isDestination ? 'bg-green-300' : isWall ? 'bg-gray-800' : 'bg-gray-200';
+    beingUsedDuringSearch ? 'bg-gray-800' :
+    isOrigin ? 'bg-yellow-200' :
+    isDestination ? 'bg-green-300' : isWall ? 'bg-red-800' : 'bg-gray-200';
   return (
     <div
       className={`w-8 h-8 ${cellColor}`}
