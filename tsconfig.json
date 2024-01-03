@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@path-craft/*": ["./src/*"]
+      "@maze-master/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

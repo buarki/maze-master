@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import Cell from './cell.component';
-import { GRID_COLUMNS, GRID_ROWS, SEARCH_SPEED } from '@path-craft/configs';
+import { GRID_COLUMNS, GRID_ROWS, SEARCH_SPEED } from '@maze-master/configs';
 
 function randomNumberBetween(lowerBound: number, upperBound: number) {
   return Math.floor(Math.random() * (upperBound - lowerBound + 1)) + lowerBound;
