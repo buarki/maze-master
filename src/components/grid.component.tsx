@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Cell from './cell.component';
 import { GRID_COLUMNS, GRID_ROWS, SEARCH_SPEED } from '@maze-master/configs';
+import { PathFindingParams, PathFindingResult } from '@maze-master/lib/path-finders/types';
 
 function randomNumberBetween(lowerBound: number, upperBound: number) {
   return Math.floor(Math.random() * (upperBound - lowerBound + 1)) + lowerBound;
@@ -11,11 +12,12 @@ function randomNumberBetween(lowerBound: number, upperBound: number) {
 interface GridProps {
   rows: number;
   cols: number;
+  findPath: (p: PathFindingParams) => Promise<PathFindingResult>;
 }
 
 const invalidPoint = { x: -1, y: -1 };
 
-const Grid: React.FC<GridProps> = ({ rows, cols }) => {
+const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
   const [grid, setGrid] = useState<Array<Array<{ isBlock: boolean, beingUsedDuringSearch: boolean }>>>(() =>
     Array.from({ length: rows }, () => Array(cols).fill(false))
   );
@@ -49,66 +51,20 @@ const Grid: React.FC<GridProps> = ({ rows, cols }) => {
   };
 
   const runPathFinding = async () => {
-    const visited = Array.from({ length: GRID_ROWS }, () => new Array(GRID_COLUMNS).fill(false));
-
-    const queue = [{ x: origin.x, y: origin.y }];
-    visited[origin.x][origin.y] = true;
-
-    const dx = [0, 1, 0, -1];
-    const dy = [-1, 0, 1, 0];
-
-    let pathWasFound = false;
-
-    const animateSearch = async () => {
-      const previous = Array.from({ length: GRID_ROWS }, () => new Array(GRID_COLUMNS).fill(null));
-
-      while (queue.length > 0) {
-        const current = queue.shift()!;
-        const { x, y } = current;
-
-        const newGrid = [...grid];
-        const currentCellIsNeitherTheOriginOrDestination = !((x === origin.x && y === origin.y) || (x === destination.x && y === destination.y));
-        newGrid[x][y] = {
-          ...newGrid[x][y],
-          beingUsedDuringSearch: currentCellIsNeitherTheOriginOrDestination,
-        };
-        setGrid(newGrid);
-
-        const reachedDestination = x === destination.x && y === destination.y;
-        if (reachedDestination) {
-          pathWasFound = true;
-
-          let currentPath = [];
-          let current = { x, y };
-          while (current.x !== origin.x || current.y !== origin.y) {
-            currentPath.push({ x: current.x, y: current.y });
-            current = previous[current.x][current.y];
-          }
-    
-          setPathCells(currentPath.reverse());
-          break;
-        }
-
-        for (let i = 0; i < 4; i++) {
-          const nx = x + dx[i];
-          const ny = y + dy[i];
-
-          const movementIsValid = nx >= 0 && nx < GRID_ROWS && ny >= 0 && ny < GRID_COLUMNS && !visited[nx][ny] && !grid[nx][ny];
-          if (movementIsValid) {
-            queue.push({ x: nx, y: ny });
-            visited[nx][ny] = true;
-
-            previous[nx][ny] = { x, y };
-          }
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, SEARCH_SPEED));
-      }
-    };
-
-    await animateSearch();
-    setThereIsPath(pathWasFound);
+    const { pathWasFound, shortestPath } = await findPath({
+      origin: origin,
+      destination: destination,
+      searchSpeed: SEARCH_SPEED,
+      graph: {
+        rows: GRID_ROWS,
+        columns: GRID_COLUMNS,
+        matrix: grid,
+      },
+      updateGrid: setGrid,
+    });
+    setPathCells(shortestPath);
     setSearchIsFinished(true);
+    setThereIsPath(pathWasFound);
   };
 
   const reloadGrid = useCallback(() => {
