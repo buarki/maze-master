@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# maze master
 
-## Getting Started
 
-First, run the development server:
+## Description
+Maze master is a funny app to create mazes and solve them with famous graph algorithms. The list with algorithm available now and soon can be found bellow:
 
-```bash
+|Algorithm|available|
+|:---:|:--:|
+|BFS (Breadth First Search)|Yes|
+|DFS (Depth First Search)|NO|
+|Dijkstra|NO|
+|A*|NO|
+
+## Running locally
+
+```sh
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Adding a new algorithm
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All contributions are wellcome! In case you want to add a new algorithm just add the implementation at the [path-finders](./src/lib/path-finders/) directory and update the list of [available algorithms](./src//lib/path-finders/index.ts). As long as your implementation respects the inteface **PathFindingAlgorithm** it should be fine. And a concrete example is the [BFS implementation](./src/lib/path-finders/bfs.ts).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
