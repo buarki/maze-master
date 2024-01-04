@@ -8,6 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        'wall': '#ef4444',
+        'not-wall': '#e5e7eb',
+        'destination': '#22c55e',
+        'origin': '#fde047',
+        'used-during-search': '#6b7280',
+        'shortest-path': '#a855f7',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
