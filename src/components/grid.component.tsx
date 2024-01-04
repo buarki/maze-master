@@ -18,7 +18,7 @@ interface GridProps {
 const invalidPoint = { x: -1, y: -1 };
 
 const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
-  const [grid, setGrid] = useState<Array<Array<{ isBlock: boolean, beingUsedDuringSearch: boolean }>>>(() =>
+  const [grid, setGrid] = useState<Array<Array<{ isWall: boolean, beingUsedDuringSearch: boolean }>>>(() =>
     Array.from({ length: rows }, () => Array(cols).fill(false))
   );
   const [origin, setOrigin] = useState<{x: number, y: number}>(invalidPoint);
@@ -34,7 +34,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
     const newGrid = [...grid];
     newGrid[row][col] = {
       ...newGrid[row][col],
-      isBlock: !newGrid[row][col].isBlock,
+      isWall: !newGrid[row][col].isWall,
     };
     setGrid(newGrid);
   };
@@ -44,7 +44,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
       const newGrid = [...grid];
       newGrid[row][col] = {
         ...newGrid[row][col],
-        isBlock: true,
+        isWall: true,
       };
       setGrid(newGrid);
     }
@@ -105,7 +105,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
       {grid.map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
           {row.map(({
-                  isBlock,
+                  isWall,
                   beingUsedDuringSearch,
               }, colIndex) => (
             <div key={colIndex} className='m-1'>
@@ -114,7 +114,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
                 beingUsedDuringSearch={beingUsedDuringSearch}
                 isOrigin={rowIndex === origin.x && colIndex === origin.y}
                 isDestination={rowIndex == destination.x && colIndex === destination.y}
-                isWall={isBlock}
+                isWall={isWall}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
                 onMouseOver={() => handleCellHover(rowIndex, colIndex)}
               />

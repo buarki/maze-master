@@ -6,7 +6,7 @@ export interface Point {
 export interface Graph {
   rows: number;
   columns: number;
-  matrix: Array<Array<{ isBlock: boolean, beingUsedDuringSearch: boolean }>>;
+  matrix: Array<Array<{ isWall: boolean, beingUsedDuringSearch: boolean }>>;
 }
 
 export interface PathFindingParams {
