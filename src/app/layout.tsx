@@ -16,8 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className='min-h-screen'>
         {children}
+        <footer className='flex justify-center'>
+          <p>Made with love by<a target='blank' className='hover:bg-gray-400 p-1' href='https://buarki.com'>buarki.com.</a></p>
+        </footer>
       </body>
     </html>
   )
