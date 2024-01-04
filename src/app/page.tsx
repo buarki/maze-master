@@ -38,23 +38,23 @@ export default function Home() {
 
       <div className="flex flex-col items-start justify-start p-8">
         <div className="mb-4">
-          <div className="w-4 h-4 bg-green-300 mr-2 inline-block"></div>
+          <div className="w-4 h-4 bg-destination mr-2 inline-block"></div>
           <span>Destination</span>
         </div>
         <div className="mb-4">
-          <div className="w-4 h-4 bg-yellow-200 mr-2 inline-block"></div>
+          <div className="w-4 h-4 bg-origin mr-2 inline-block"></div>
           <span>Origin</span>
         </div>
         <div className="mb-4">
-          <div className="w-4 h-4 bg-red-800 mr-2 inline-block"></div>
+          <div className="w-4 h-4 bg-wall mr-2 inline-block"></div>
           <span>Wall</span>
         </div>
         <div className="mb-4">
-          <div className="w-4 h-4 bg-gray-800 mr-2 inline-block"></div>
-          <span>Search</span>
+          <div className="w-4 h-4 bg-used-during-search mr-2 inline-block"></div>
+          <span>Searched path</span>
         </div>
         <div>
-          <div className="w-4 h-4 bg-yellow-500 mr-2 inline-block"></div>
+          <div className="w-4 h-4 bg-shortest-path mr-2 inline-block"></div>
           <span>Shortest Path</span>
         </div>
       </div>

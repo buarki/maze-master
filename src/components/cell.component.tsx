@@ -21,16 +21,16 @@ const Cell: React.FC<CellProps> = ({
 }) => {
   const cellColor =
     beingUsedDuringSearch
-      ? 'bg-gray-800'
+      ? 'bg-used-during-search'
       : isOrigin
-      ? 'bg-yellow-200'
+      ? 'bg-origin'
       : isDestination
-      ? 'bg-green-300'
+      ? 'bg-destination'
       : isWall
-      ? 'bg-red-500'
-      : 'bg-gray-200';
+      ? 'bg-wall'
+      : 'bg-not-wall';
 
-  const optimalPathStyle = isOptimalPath ? 'bg-purple-500' : '';
+  const optimalPathStyle = isOptimalPath ? 'bg-shortest-path' : '';
 
   return (
     <div
