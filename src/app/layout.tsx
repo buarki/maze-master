@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import { defaultMetadata } from '@maze-master/metadata'
 
 export const metadata: Metadata = {
-  title: 'pathcraft',
-  description: 'pathcraft app',
+  ...defaultMetadata,
 }
 
 export default function RootLayout({
