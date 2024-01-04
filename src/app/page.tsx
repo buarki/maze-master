@@ -16,7 +16,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen">
+    <main className="flex">
       <div className="flex flex-col items-start justify-start p-8">
         <label className="mb-2 text-lg font-bold">Select Algorithm:</label>
         <select
@@ -51,7 +51,7 @@ export default function Home() {
         </div>
         <div className="mb-4">
           <div className="w-4 h-4 bg-used-during-search mr-2 inline-block"></div>
-          <span>Searched path</span>
+          <span>Search path</span>
         </div>
         <div>
           <div className="w-4 h-4 bg-shortest-path mr-2 inline-block"></div>

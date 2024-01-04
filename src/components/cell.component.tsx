@@ -20,7 +20,9 @@ const Cell: React.FC<CellProps> = ({
   onMouseOver,
 }) => {
   const cellColor =
-    beingUsedDuringSearch
+    isOptimalPath
+      ? 'bg-shortest-path' :
+      beingUsedDuringSearch
       ? 'bg-used-during-search'
       : isOrigin
       ? 'bg-origin'
@@ -30,11 +32,9 @@ const Cell: React.FC<CellProps> = ({
       ? 'bg-wall'
       : 'bg-not-wall';
 
-  const optimalPathStyle = isOptimalPath ? 'bg-shortest-path' : '';
-
   return (
     <div
-      className={`w-8 h-8 ${cellColor} ${optimalPathStyle}`}
+      className={`w-8 h-8 ${cellColor}`}
       onClick={onClick}
       onMouseOver={onMouseOver}
     />
