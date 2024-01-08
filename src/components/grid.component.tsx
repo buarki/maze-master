@@ -67,6 +67,14 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
     setThereIsPath(pathWasFound);
   };
 
+  const cleanGrid = () => {
+    const currentOrigin = { ...origin };
+    const currentDestination = { ...destination };
+    reloadGrid();
+    setOrigin(currentOrigin);
+    setDestination(currentDestination);
+  };
+
   const reloadGrid = useCallback(() => {
     const newGrid = Array.from({ length: rows }, () => Array(cols).fill(false));
 
@@ -127,6 +135,11 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
           onClick={reloadGrid}
           className={`bg-blue-500 hover:bg-blue-300 p-2 text-white font-bold ${searchIsFinished && !thereIsPath ? 'vibrate' : ''}`}>
             Reload
+        </button>
+        <button
+          onClick={cleanGrid}
+          className={`bg-yellow-500 hover:bg-yellow-300 p-2 text-white font-bold}`}>
+            Clean grid
         </button>
         <button
           onClick={runPathFinding}
