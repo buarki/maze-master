@@ -27,6 +27,7 @@ export default function Home() {
           {pathFindingAlgorithms.map((algorithm, index) =>
               <option key={index} value={algorithm.name}>{algorithm.name}</option>)}
         </select>
+        <a title="Visit the project repository on Github." href="https://github.com/buarki/maze-master" target="_blank" className="bg-blue-500 hover:bg-blue-300 font-bold text-white p-2">Github</a>
       </div>
 
       <div className="flex flex-col items-center justify-center p-8">
