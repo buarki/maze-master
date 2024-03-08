@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import Cell from './cell.component';
-import { GRID_COLUMNS, GRID_ROWS, SEARCH_SPEED } from '@maze-master/configs';
 import { PathFindingParams, PathFindingResult } from '@maze-master/lib/path-finders/types';
 
 function randomNumberBetween(lowerBound: number, upperBound: number) {
@@ -12,12 +11,13 @@ function randomNumberBetween(lowerBound: number, upperBound: number) {
 interface GridProps {
   rows: number;
   cols: number;
+  gridSpeed: number;
   findPath: (p: PathFindingParams) => Promise<PathFindingResult>;
 }
 
 const invalidPoint = { x: -1, y: -1 };
 
-const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
+const Grid: React.FC<GridProps> = ({ rows, cols, gridSpeed, findPath }) => {
   const [grid, setGrid] = useState<Array<Array<{ isWall: boolean, beingUsedDuringSearch: boolean }>>>(() =>
     Array.from({ length: rows }, () => Array(cols).fill(false))
   );
@@ -25,7 +25,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
   const [destination, setDestination] = useState<{x: number, y: number}>(invalidPoint);
   const [isMousePressed, setMousePressed] = useState<boolean>(false);
   const [thereIsPath, setThereIsPath] = useState<boolean>(true);
-  // TODO check if we really need this
+
   const [searchIsFinished, setSearchIsFinished] = useState(false);
   const [pathCells, setPathCells] = useState<Array<{ x: number; y: number }>>([]);
 
@@ -54,10 +54,10 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
     const { pathWasFound, shortestPath } = await findPath({
       origin: origin,
       destination: destination,
-      searchSpeed: SEARCH_SPEED,
+      searchSpeed: gridSpeed,
       graph: {
-        rows: GRID_ROWS,
-        columns: GRID_COLUMNS,
+        rows: rows,
+        columns: cols,
         matrix: grid,
       },
       updateGrid: setGrid,
@@ -78,17 +78,17 @@ const Grid: React.FC<GridProps> = ({ rows, cols, findPath }) => {
   const reloadGrid = useCallback(() => {
     const newGrid = Array.from({ length: rows }, () => Array(cols).fill(false));
 
-    let newOriginX = randomNumberBetween(0, GRID_ROWS - 1);
-    let newOriginY = randomNumberBetween(0, GRID_COLUMNS - 1);
+    let newOriginX = randomNumberBetween(0, rows - 1);
+    let newOriginY = randomNumberBetween(0, cols - 1);
 
-    let newDestinationX = randomNumberBetween(0, GRID_ROWS - 1);
-    let newDestinationY = randomNumberBetween(0, GRID_COLUMNS - 1);
+    let newDestinationX = randomNumberBetween(0, rows - 1);
+    let newDestinationY = randomNumberBetween(0, cols - 1);
 
     while (newOriginX === newDestinationX && newOriginY === newDestinationY) {
-      newOriginX = randomNumberBetween(0, GRID_ROWS - 1);
-      newOriginY = randomNumberBetween(0, GRID_COLUMNS - 1);
-      newDestinationX = randomNumberBetween(0, GRID_ROWS - 1);
-      newDestinationY = randomNumberBetween(0, GRID_COLUMNS - 1);
+      newOriginX = randomNumberBetween(0, rows - 1);
+      newOriginY = randomNumberBetween(0, cols - 1);
+      newDestinationX = randomNumberBetween(0, rows - 1);
+      newDestinationY = randomNumberBetween(0, cols - 1);
     }
 
     setOrigin({ x: newOriginX, y: newOriginY });

@@ -13,8 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='min-h-screen'>
-        {children}
+      <body className='flex flex-col min-h-screen'>
+        <div className='flex-grow'>
+          {children}
+        </div>
         <footer className='flex justify-center'>
           <p>Made with love by<a target='blank' className='hover:bg-gray-400 p-1' href='https://buarki.com'>buarki.com.</a></p>
         </footer>

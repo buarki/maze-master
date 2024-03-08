@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Grid from "@maze-master/components/grid.component";
-import { GRID_COLUMNS, GRID_ROWS } from "@maze-master/configs";
+import { GRID_COLUMNS, GRID_ROWS, SEARCH_SPEED } from "@maze-master/configs";
 import { pathFindingAlgorithms } from "@maze-master/lib/path-finders";
+import { ColorsSubtitles } from "@maze-master/components/colors-subtitles.components";
 
 export default function Home() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(pathFindingAlgorithms[0].name);
@@ -16,7 +17,8 @@ export default function Home() {
   };
 
   return (
-    <main className="flex">
+    <main className="flex w-full relative">
+      <div id="smallScreenAlert"></div>
       <div className="flex flex-col items-start justify-start p-8">
         <label className="mb-2 text-lg font-bold">Select Algorithm:</label>
         <select
@@ -28,36 +30,20 @@ export default function Home() {
               <option key={index} value={algorithm.name}>{algorithm.name}</option>)}
         </select>
         <a title="Visit the project repository on Github." href="https://github.com/buarki/maze-master" target="_blank" className="bg-blue-500 hover:bg-blue-300 font-bold text-white p-2">Github</a>
+      
+        <ColorsSubtitles className="mt-10"/>
       </div>
 
-      <div className="flex flex-col items-center justify-center p-8">
+      <div className="lg:visible hidden flex-grow lg:flex flex-col items-center justify-center p-8">
         <Grid
           findPath={pathFindingAlgorithmToUse}
+          gridSpeed={SEARCH_SPEED}
           rows={GRID_ROWS}
           cols={GRID_COLUMNS} />
       </div>
 
-      <div className="flex flex-col items-start justify-start p-8">
-        <div className="mb-4">
-          <div className="w-4 h-4 bg-destination mr-2 inline-block"></div>
-          <span>Destination</span>
-        </div>
-        <div className="mb-4">
-          <div className="w-4 h-4 bg-origin mr-2 inline-block"></div>
-          <span>Origin</span>
-        </div>
-        <div className="mb-4">
-          <div className="w-4 h-4 bg-wall mr-2 inline-block"></div>
-          <span>Wall</span>
-        </div>
-        <div className="mb-4">
-          <div className="w-4 h-4 bg-used-during-search mr-2 inline-block"></div>
-          <span>Search path</span>
-        </div>
-        <div>
-          <div className="w-4 h-4 bg-shortest-path mr-2 inline-block"></div>
-          <span>Shortest Path</span>
-        </div>
+      <div className="bg-red-100 lg:hidden text-center absolute inset-0 flex items-center justify-center text-3xl">
+        <h1>Please use a Desktop in full screen for a better experience.</h1>
       </div>
     </main>
   );
