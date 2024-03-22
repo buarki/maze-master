@@ -9,7 +9,7 @@ Maze master is a funny app to create mazes and solve them with famous graph algo
 |BFS (Breadth-First Search)|YES|
 |DFS (Depth-First Search)|YES|
 |Dijkstra|YES|
-|A*|NO|
+|A*|YES|
 
 ## Running locally
 
