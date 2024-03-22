@@ -1,3 +1,4 @@
+import { aStar } from "./a-star";
 import { bfs } from "./bfs";
 import { dfs } from "./dfs";
 import { dijkstra } from "./dijkstra";
@@ -20,5 +21,9 @@ export const pathFindingAlgorithms: PathFindingAlgorithm[] = [
   {
     name: "Dijkstra",
     algorithm: dijkstra,
+  },
+  {
+    name: "A*",
+    algorithm: aStar,
   },
 ];
