@@ -28,6 +28,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, gridSpeed, findPath }) => {
 
   const [searchIsFinished, setSearchIsFinished] = useState(false);
   const [pathCells, setPathCells] = useState<Array<{ x: number; y: number }>>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
 
   const handleCellClick = (row: number, col: number) => {
@@ -51,6 +52,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, gridSpeed, findPath }) => {
   };
 
   const runPathFinding = async () => {
+    setIsSearching(true);
     const { pathWasFound, shortestPath } = await findPath({
       origin: origin,
       destination: destination,
@@ -62,6 +64,7 @@ const Grid: React.FC<GridProps> = ({ rows, cols, gridSpeed, findPath }) => {
       },
       updateGrid: setGrid,
     });
+    setIsSearching(false);
     setPathCells(shortestPath);
     setSearchIsFinished(true);
     setThereIsPath(pathWasFound);
@@ -132,16 +135,19 @@ const Grid: React.FC<GridProps> = ({ rows, cols, gridSpeed, findPath }) => {
       ))}
       <div className='flex justify-center gap-12'>
         <button
+          disabled={isSearching}
           onClick={reloadGrid}
-          className={`bg-blue-500 hover:bg-blue-300 p-2 text-white font-bold ${searchIsFinished && !thereIsPath ? 'vibrate' : ''}`}>
+          className={`p-2 text-white font-bold ${isSearching ? 'bg-blue-200' : 'bg-blue-500 hover:bg-blue-300'} ${searchIsFinished && !thereIsPath ? 'vibrate' : ''}`}>
             Reload
         </button>
         <button
+          disabled={isSearching}
           onClick={cleanGrid}
-          className={`bg-yellow-500 hover:bg-yellow-300 p-2 text-white font-bold}`}>
+          className={`p-2 text-white font-bold ${isSearching ? 'bg-yellow-200' : 'bg-yellow-500 hover:bg-yellow-300'}`}>
             Clean grid
         </button>
         <button
+          disabled={isSearching}
           onClick={runPathFinding}
           className='bg-green-500 hover:bg-green-300 p-2 text-white font-bold'>Find Path</button>
       </div>
